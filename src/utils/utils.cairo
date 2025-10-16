@@ -284,3 +284,156 @@ pub fn convert_claim_code_to_type (code: u8) -> ClaimType {
 
     claim_type
 }
+
+
+pub fn convert_payment_status_to_code(status: PaymentStatus) -> u8 {
+
+    let code: u8 = match status {
+
+        PaymentStatus::Pending => 0,
+        PaymentStatus::Processing => 1,
+        PaymentStatus::Successful => 2,
+        PaymentStatus::Failed => 3,
+        PaymentStatus::Cancelled => 4,
+        PaymentStatus::Refunded => 5,
+        PaymentStatus::InvalidPaymentStatus => 100
+    };
+
+    code
+}
+
+pub fn convert_payment_code_to_status(code: u8) -> PaymentStatus {
+
+    let status: PaymentStatus = match code {
+        0 => PaymentStatus::Pending,
+        1 => PaymentStatus::Processing,
+        2 => PaymentStatus::Successful,
+        3 => PaymentStatus::Failed,
+        4 => PaymentStatus::Cancelled,
+        5 => PaymentStatus::Refunded,
+        _ => PaymentStatus::InvalidPaymentStatus
+    };
+
+    status
+}
+
+
+
+
+pub fn convert_claims_settlement_source_to_code(source: ClaimsPaymentSource) -> u8 {
+
+    let code: u8 = match source {
+        ClaimsPaymentSource::Reserve => 0,
+        ClaimsPaymentSource::Reinsurance => 1,
+        ClaimsPaymentSource::InvestorsPool => 2,
+        ClaimsPaymentSource::Mixed => 3,
+        ClaimsPaymentSource::InvalidPaymentSource => 100
+    };
+
+    code
+}
+
+
+pub fn convert_claims_settlement_source_code_to_source(code: u8) -> ClaimsPaymentSource {
+
+    let source: ClaimsPaymentSource = match code {
+        0 => ClaimsPaymentSource::Reserve,
+        1 => ClaimsPaymentSource::Reinsurance,
+        2 => ClaimsPaymentSource::InvestorsPool,
+        3 => ClaimsPaymentSource::Mixed,
+        _ => ClaimsPaymentSource::InvalidPaymentSource
+    };
+
+    source
+}
+
+
+
+
+pub fn convert_reinsurance_status_to_code(status: ReinsuranceStatus) -> u8 {
+
+    let code: u8 = match status {
+        ReinsuranceStatus::Initiated => 0,
+        ReinsuranceStatus::Submitted => 1,
+        ReinsuranceStatus::Acknowledged => 2,
+        ReinsuranceStatus::UnderReview => 3,
+        ReinsuranceStatus::Pending => 4,
+        ReinsuranceStatus::Quoted => 5,
+        ReinsuranceStatus::Negotiated => 6,
+        ReinsuranceStatus::Approved => 7,
+        ReinsuranceStatus::Rejected => 8,
+        ReinsuranceStatus::Withdrawn => 9,
+        ReinsuranceStatus::Expired => 10,
+        ReinsuranceStatus::InvalidReinsuranceStatus => 100
+    };
+
+    code
+}
+
+
+pub fn convert_reinsurance_status_code_to_status(code: u8) -> ReinsuranceStatus {
+
+    let status: ReinsuranceStatus = match code {
+        0 => ReinsuranceStatus::Initiated,
+        1 => ReinsuranceStatus::Submitted,
+        2 => ReinsuranceStatus::Acknowledged,
+        3 => ReinsuranceStatus::UnderReview,
+        4 => ReinsuranceStatus::Pending,
+        5 => ReinsuranceStatus::Quoted,
+        6 => ReinsuranceStatus::Negotiated,
+        7 => ReinsuranceStatus::Approved,
+        8 => ReinsuranceStatus::Rejected,
+        9 => ReinsuranceStatus::Withdrawn,
+        10 => ReinsuranceStatus::Expired,
+        _ => ReinsuranceStatus::InvalidReinsuranceStatus
+    };
+
+    status
+}
+
+pub fn convert_reinsurance_contract_type_to_code(contract_type: ReinsuranceContractType) -> u8 {
+    
+    let code: u8 = match contract_type {
+        ReinsuranceContractType::Treaty => 0,
+        ReinsuranceContractType::Facultative => 1,
+        ReinsuranceContractType::InvalidContractType => 100,
+    };
+
+    code
+}
+
+pub fn convert_reinsurance_contract_code_to_type(code: u8) -> ReinsuranceContractType {
+
+    let contract_type: ReinsuranceContractType = match code {
+        0 => ReinsuranceContractType::Treaty,
+        1 => ReinsuranceContractType::Facultative,
+        _ => ReinsuranceContractType::InvalidContractType
+    };
+
+    contract_type
+}
+
+
+
+pub fn is_claim_approved_for_settlement(is_risk_analytics_approved: bool, is_governance_approved: bool) -> bool {
+        
+    if is_risk_analytics_approved {
+        return true;
+    } else if is_governance_approved {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+pub fn is_proposal_approved_for_premium_payment(is_risk_analytics_approved: bool, is_governance_approved: bool) -> bool {
+        
+    if is_risk_analytics_approved {
+        return true;
+    } else if is_governance_approved {
+        return true;
+    } else {
+        return false;
+    }
+}

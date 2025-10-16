@@ -173,6 +173,8 @@ pub mod PolicyNFT {
                 is_expired: false,
                 claims_count: 0,
                 has_claimed: false,
+                has_reinsurance: paid_proposal.has_reinsurance,
+                reinsurance_txn_id: paid_proposal.reinsurance_txn_id,
                 aggregate_claim_amount: 0                
             };
 
@@ -192,6 +194,8 @@ pub mod PolicyNFT {
                 is_expired: false,
                 claims_count: 0,
                 has_claimed: false,
+                has_reinsurance: paid_proposal.has_reinsurance,
+                reinsurance_txn_id: paid_proposal.reinsurance_txn_id,
                 claim_ids: array![],
                 aggregate_claim_amount: 0
             };
@@ -276,6 +280,8 @@ pub mod PolicyNFT {
                 is_expired: policy_data.is_expired,
                 claims_count: len.into(),
                 has_claimed: has_claimed,
+                has_reinsurance: policy_data.has_reinsurance,
+                reinsurance_txn_id: policy_data.reinsurance_txn_id,
                 claim_ids: claim_array,
                 aggregate_claim_amount: policy_aggregate_claim_amount
             };
@@ -284,8 +290,13 @@ pub mod PolicyNFT {
         }
 
         fn set_base_uri(ref self: ContractState, new_base_uri: ByteArray) {
+
+            let caller: ContractAddress = get_caller_address();
+
+            assert!(self.accesscontrol.has_role(ADMIN_ROLE, caller), "AccessControl: Caller is not the Admin");
             self.base_uri.write(new_base_uri);
         }
+        
         fn update_policy_data(
             ref self: ContractState, 
             token_id: u256, 
@@ -295,7 +306,9 @@ pub mod PolicyNFT {
             premium_frequency_code: u8,
             frequency_factor: u8,
             update_type_code: u8,
-            endorsement_amount: u256
+            endorsement_amount: u256,
+            has_reinsurance: bool,
+            reinsurance_txn_id: u256
         ) {
 
             let current_policy_data: PolicyData = self.policy_details.read(token_id);
@@ -327,6 +340,8 @@ pub mod PolicyNFT {
                         is_expired: current_policy_data.is_expired,
                         claims_count: current_policy_data.claims_count,
                         has_claimed: current_policy_data.has_claimed,
+                        has_reinsurance: has_reinsurance,
+                        reinsurance_txn_id: reinsurance_txn_id,
                         aggregate_claim_amount: current_policy_data.aggregate_claim_amount     
                     },
                 1 => PolicyData {
@@ -345,6 +360,8 @@ pub mod PolicyNFT {
                         is_expired: current_policy_data.is_expired,
                         claims_count: current_policy_data.claims_count,
                         has_claimed: current_policy_data.has_claimed,
+                        has_reinsurance: has_reinsurance,
+                        reinsurance_txn_id: reinsurance_txn_id,
                         aggregate_claim_amount: current_policy_data.aggregate_claim_amount     
                     },
                 _ => current_policy_data
@@ -411,6 +428,12 @@ pub mod PolicyNFT {
 
             assert!(self.accesscontrol.has_role(ADMIN_ROLE, caller), "AccessControl: Caller is not the Admin");
             self.claims_contract_address.write(claims_contract_address);
+        }
+
+        fn get_base_uri(
+            self: @ContractState
+        ) -> ByteArray {
+            self.base_uri.read()
         }
     }
 

@@ -169,6 +169,7 @@ use starknet::{
                 claimant: claimant,
                 claim_description: claim_description,
                 claim_amount: claim_amount,
+                approved_settlement_amount: 0,
                 alternative_account: alternative_account,
                 policy_class_code: policy_class_code,
                 claim_status_code: 0,
@@ -251,6 +252,7 @@ use starknet::{
                 claimant: claimant,
                 claim_description: claim_description,
                 claim_amount: claim_amount,
+                approved_settlement_amount: claim_to_update.approved_settlement_amount,
                 alternative_account: alternative_account,
                 policy_class_code: policy_class_code,
                 claim_status_code: claim_to_update.claim_status_code,
@@ -306,6 +308,7 @@ use starknet::{
                 claimant: sought_claim.claimant,
                 claim_description: sought_claim.claim_description,
                 claim_amount: sought_claim.claim_amount,
+                approved_settlement_amount: sought_claim.approved_settlement_amount,
                 alternative_account: sought_claim.alternative_account,
                 policy_class: convert_policy_code_to_class(sought_claim.policy_class_code),
                 claim_status: convert_claim_code_to_status(sought_claim.claim_status_code),
@@ -355,7 +358,8 @@ use starknet::{
             is_repudiated: bool,
             repudiation_reason_code: u8,
             claim_status_code: u8,
-            claim_type_code: u8
+            claim_type_code: u8,
+            approved_settlement_amount: u256,
         ) {
 
             let caller: ContractAddress = get_caller_address();
@@ -384,6 +388,7 @@ use starknet::{
                 claimant: claimant,
                 claim_description: claim_to_assess.claim_description,
                 claim_amount: claim_to_assess.claim_amount,
+                approved_settlement_amount: approved_settlement_amount,
                 alternative_account: claim_to_assess.alternative_account,
                 policy_class_code: claim_to_assess.policy_class_code,
                 claim_status_code: claim_status_code,
@@ -412,7 +417,8 @@ use starknet::{
             is_repudiated: bool,
             repudiation_reason_code: u8,
             claim_status_code: u8,
-            claim_type_code: u8
+            claim_type_code: u8,
+            approved_settlement_amount: u256,
         ) {
 
             let caller: ContractAddress = get_caller_address();
@@ -441,6 +447,7 @@ use starknet::{
                 claimant: claimant,
                 claim_description: claim_to_assess.claim_description,
                 claim_amount: claim_to_assess.claim_amount,
+                approved_settlement_amount: approved_settlement_amount,
                 alternative_account: claim_to_assess.alternative_account,
                 policy_class_code: claim_to_assess.policy_class_code,
                 claim_status_code: claim_status_code,
@@ -476,6 +483,7 @@ use starknet::{
                 claimant: sought_claim.claimant,
                 claim_description: sought_claim.claim_description,
                 claim_amount: sought_claim.claim_amount,
+                approved_settlement_amount: sought_claim.approved_settlement_amount,
                 alternative_account: sought_claim.alternative_account,
                 policy_class_code: sought_claim.policy_class_code,
                 claim_status_code: convert_claim_status_to_code(ClaimStatus::Settled),
@@ -513,6 +521,7 @@ use starknet::{
                 claimant: sought_claim.claimant,
                 claim_description: sought_claim.claim_description,
                 claim_amount: sought_claim.claim_amount,
+                approved_settlement_amount: sought_claim.approved_settlement_amount,
                 alternative_account: sought_claim.alternative_account,
                 policy_class_code: sought_claim.policy_class_code,
                 claim_status_code: convert_claim_status_to_code(ClaimStatus::Repudiated),
@@ -561,6 +570,7 @@ use starknet::{
                     claimant: desired_claim.claimant,
                     claim_description: desired_claim.claim_description,
                     claim_amount: desired_claim.claim_amount,
+                    approved_settlement_amount: desired_claim.approved_settlement_amount,
                     alternative_account: desired_claim.alternative_account,
                     policy_class: convert_policy_code_to_class(desired_claim.policy_class_code),
                     claim_status: convert_claim_code_to_status(desired_claim.claim_status_code),
@@ -611,6 +621,7 @@ use starknet::{
                     claimant: desired_claim.claimant,
                     claim_description: desired_claim.claim_description,
                     claim_amount: desired_claim.claim_amount,
+                    approved_settlement_amount: desired_claim.approved_settlement_amount,
                     alternative_account: desired_claim.alternative_account,
                     policy_class: convert_policy_code_to_class(desired_claim.policy_class_code),
                     claim_status: convert_claim_code_to_status(desired_claim.claim_status_code),
@@ -661,6 +672,7 @@ use starknet::{
                     policy_id: desired_claim.policy_id,
                     proposal_id: desired_claim.proposal_id,
                     claimant: desired_claim.claimant,
+                    approved_settlement_amount: desired_claim.approved_settlement_amount,
                     claim_description: desired_claim.claim_description,
                     claim_amount: desired_claim.claim_amount,
                     alternative_account: desired_claim.alternative_account,
@@ -713,6 +725,7 @@ use starknet::{
                     claimant: desired_claim.claimant,
                     claim_description: desired_claim.claim_description,
                     claim_amount: desired_claim.claim_amount,
+                    approved_settlement_amount: desired_claim.approved_settlement_amount,
                     alternative_account: desired_claim.alternative_account,
                     policy_class: convert_policy_code_to_class(desired_claim.policy_class_code),
                     claim_status: convert_claim_code_to_status(desired_claim.claim_status_code),
@@ -763,6 +776,7 @@ use starknet::{
                     claimant: desired_claim.claimant,
                     claim_description: desired_claim.claim_description,
                     claim_amount: desired_claim.claim_amount,
+                    approved_settlement_amount: desired_claim.approved_settlement_amount,
                     alternative_account: desired_claim.alternative_account,
                     policy_class: convert_policy_code_to_class(desired_claim.policy_class_code),
                     claim_status: convert_claim_code_to_status(desired_claim.claim_status_code),
@@ -831,6 +845,7 @@ use starknet::{
                 claimant: claimant,
                 claim_description: claim_to_update.claim_description,
                 claim_amount: claim_to_update.claim_amount,
+                approved_settlement_amount: claim_to_update.approved_settlement_amount,
                 alternative_account: claim_to_update.alternative_account,
                 policy_class_code: claim_to_update.policy_class_code,
                 claim_status_code: claim_to_update.claim_status_code,
@@ -1016,18 +1031,6 @@ use starknet::{
 
         }    
     }
-
-    fn is_claim_approved_for_settlement(is_risk_analytics_approved: bool, is_governance_approved: bool) -> bool {
-        
-        if is_risk_analytics_approved {
-            return true;
-        } else if is_governance_approved {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
 
     #[abi(embed_v0)]
     impl UpgradeableImpl of IUpgradeable<ContractState> {

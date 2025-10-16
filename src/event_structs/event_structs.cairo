@@ -1,3 +1,4 @@
+use crate::enums::enums::ClaimsPaymentSource;
 use starknet::ContractAddress;
 use crate::enums::enums::*;
 
@@ -156,5 +157,144 @@ pub struct ProposalExpired {
         pub escalator: ContractAddress,
         pub reason: ByteArray,
     }
+
+
+
+#[derive(Drop, starknet::Event)]
+pub struct PremiumPaymentRecorded {
+    #[key]
+    pub transaction_id: u256,
+    pub proposal_id: u256,
+    pub policy_id: u256,
+    pub payer_address: ContractAddress,
+    pub policyholder: ContractAddress,
+    pub amount_paid: u256,
+    pub sum_insured: u256,
+    pub payment_date: u64,
+    pub txn_hash: felt252
+}
+
+#[derive(Drop, starknet::Event)]
+pub struct PremiumPaymentUpdated {
+    #[key]
+    pub transaction_id: u256,
+    pub policy_id: u256,
+    pub txn_hash: felt252,
+    pub payment_status: PaymentStatus,
+    pub updated_at: u64
+}
+
+
+#[derive(Drop, starknet::Event)]
+pub struct ClaimPaymentExecuted {
+    #[key]
+    pub transaction_id: u256,
+    pub policy_id: u256,
+    pub claim_id: u256,
+    pub policyholder: ContractAddress,
+    pub third_party_account: ContractAddress,
+    pub claim_amount: u256,
+    pub approved_settlement_amount: u256,
+    pub settlement_date: u64,
+    pub txn_hash: felt252,
+    pub settlement_source: ClaimsPaymentSource
+}
+
+#[derive(Drop, starknet::Event)]
+pub struct ClaimPaymentUpdated {
+    #[key]
+    pub transaction_id: u256,
+    pub policy_id: u256,
+    pub claim_id: u256,
+    pub policyholder: ContractAddress,
+    pub third_party_account: ContractAddress,
+    pub settlement_status: PaymentStatus,
+    pub settlement_source: ClaimsPaymentSource,
+    pub updated_at: u64,
+    pub txn_hash: felt252
+}
+
+// STINDEM Purchase Events
+#[derive(Drop, starknet::Event)]
+pub struct StindemPurchased {
+    #[key]
+    pub transaction_id: u256,
+    pub buyer_address: ContractAddress,
+    pub seller_address: ContractAddress,
+    pub token_address: ContractAddress,
+    pub quantity: u256,
+    pub unit_price: u256,
+    pub total_price_paid: u256,
+    pub payment_date: u64,
+    pub txn_hash: felt252
+}
+
+#[derive(Drop, starknet::Event)]
+pub struct StindemPurchaseUpdated {
+    #[key]
+    pub transaction_id: u256,
+    pub buyer_address: ContractAddress,
+    pub token_address: ContractAddress,
+    pub quantity: u256,
+    pub payment_status: PaymentStatus,
+    pub updated_at: u64,
+    pub txn_hash: felt252
+}
+
+// STINDEM Recovery Events
+#[derive(Drop, starknet::Event)]
+pub struct StindemRecovered {
+    #[key]
+    pub transaction_id: u256,
+    pub seller_address: ContractAddress,
+    pub buyer_address: ContractAddress,
+    pub stindem_token_address: ContractAddress,
+    pub strk_token_address: ContractAddress,
+    pub stindem_quantity: u256,
+    pub strk_amount_paid: u256,
+    pub unit_price: u256,
+    pub recovery_date: u64,
+    pub txn_hash: felt252
+}
+
+#[derive(Drop, starknet::Event)]
+pub struct StindemRecoveryUpdated {
+    #[key]
+    pub transaction_id: u256,
+    pub seller_address: ContractAddress,
+    pub stindem_quantity: u256,
+    pub strk_amount_paid: u256,
+    pub payment_status: PaymentStatus,
+    pub updated_at: u64,
+    pub txn_hash: felt252
+}
+
+// Voting Commitment Events
+#[derive(Drop, starknet::Event)]
+pub struct VotingCommitmentPurchased {
+    #[key]
+    pub transaction_id: u256,
+    pub voter_address: ContractAddress,
+    pub treasury_address: ContractAddress,
+    pub stindem_token_address: ContractAddress,
+    pub stindem_quantity: u256,
+    pub unit_price: u256,
+    pub commitment_date: u64,
+    pub txn_hash: felt252
+}
+
+#[derive(Drop, starknet::Event)]
+pub struct VotingCommitmentUpdated {
+    #[key]
+    pub transaction_id: u256,
+    pub voter_address: ContractAddress,
+    pub stindem_quantity: u256,
+    pub payment_status: PaymentStatus,
+    pub updated_at: u64,
+    pub txn_hash: felt252
+}
+
+
+
 
    

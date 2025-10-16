@@ -102,3 +102,46 @@ pub enum ClaimType {
     InvalidClaimType
 }
 
+#[derive(Drop, Copy, Serde)]
+pub enum PaymentStatus {
+    Pending,
+    Processing,
+    Successful,
+    Failed,
+    Cancelled,
+    Refunded,
+    InvalidPaymentStatus
+}
+
+#[derive(Drop, Copy, Serde)]
+pub enum ClaimsPaymentSource {
+    Reserve,
+    Reinsurance,
+    InvestorsPool,
+    Mixed,
+    InvalidPaymentSource
+}
+
+#[derive(Drop, Copy, Serde)]
+pub enum ReinsuranceStatus {
+    Initiated,
+    Submitted,
+    Acknowledged,
+    UnderReview,
+    Pending,
+    Quoted,
+    Negotiated,
+    Approved,
+    Rejected,
+    Withdrawn,
+    Expired,
+    InvalidReinsuranceStatus
+}
+
+
+#[derive(Drop, Copy, Serde)]
+pub enum ReinsuranceContractType {
+    Treaty,
+    Facultative,
+    InvalidContractType
+}
